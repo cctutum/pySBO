@@ -16,10 +16,12 @@ from smt.surrogate_models import KRG
 xt = np.array([0.0, 1.0, 2.0, 3.0, 4.0])
 yt = np.array([0.0, 1.0, 1.5, 0.9, 1.0])
 
+# choose Kriging as the surrogate model (sm)
 sm = KRG(theta0=[1e-2])
 sm.set_training_values(xt, yt)
 sm.train()
 
+# create grid for evaluation
 num = 100
 x = np.linspace(0.0, 4.0, num)
 y = sm.predict_values(x)
@@ -34,8 +36,8 @@ axs.plot(xt, yt, "o")
 axs.plot(x, y)
 axs.fill_between(
     np.ravel(x),
-    np.ravel(y - 3 * np.sqrt(s2)),
-    np.ravel(y + 3 * np.sqrt(s2)),
+    np.ravel(y - 3 * np.sqrt(s2)), # -3 \sigma confidence interval
+    np.ravel(y + 3 * np.sqrt(s2)), # +3 \sigma confidence interval
     color="lightgrey",
 )
 axs.set_xlabel("x")
